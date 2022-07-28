@@ -23,6 +23,7 @@ def find_peak_distances_and_peak_values(soundBuffer):
     peakDistances = []  # liste um entfernungen zwischen peaks zu messen
     peakValues=[]
 
+
     wasWaveformPositive = True
     isBelowLowerThreshold = False  # waveform was below 10 percent
 
@@ -75,23 +76,28 @@ def find_peak_distances_and_peak_values(soundBuffer):
                     if (distanceCounter < 1000):
                         # append the peak to the peak distances list
                         peakDistances.append(currentPeakPosition - lastPeakPosition)
+                        peakValues.append(soundBuffer[currentPeakPosition])
                         distanceCounter += 1
     # calculate the median of the peak distances
     #peakDistanceMedian = np.median(peakDistances)
     #print(peakDistances)
     #peakDistances.sort()
     #plt.plot(soundBuffer)
-    return peakDistances, peakValues
+
+    return peakDistances,peakValues
 
 
 def calculate_frequency_using_peaks(audio_data,sample_rate=44100):
-    peak_distances,peak_values =  find_peak_distances_and_peak_values(audio_data)
+    peak_distances,peakValues =  find_peak_distances(audio_data)
+
     median_distance=1
     if(peak_distances.__len__()!= 0):
         median_distance = np.median(peak_distances)
 
     f = calculate_frequency(median_distance,sample_rate)
-    return f
+    amplitude = np.average(peakValues)
+
+    return f,amplitude
 
 # calculate the frequency of a sample length
 def calculate_frequency(waveformLength, sampleRate):
@@ -107,8 +113,38 @@ def map_frequency_to_midi(frequency):
     n = np.clip(n,0,127)
     return int(n)
 
+def map_midi_to_note(midi_note):
+    #calculate the note to a frequency
+
+    music_scale = ["C","Cis","D","Dis","E","F","Fis","G","Gis","A","Ais","H"]
+
+    note = music_scale[midi_note % (music_scale.__len__())]
+
+    if(midi_note <=  35):# C1 C2 C3
+        note = note + str((int(4-(midi_note)/12)))
+
+    if(midi_note >= 48): #cdefgahc
+        note =  note.lower()
+
+    if(midi_note >= 60):# g''''''
+        octav =  (int((midi_note-60)/12))+1
+        octav_apostrophe = "'" * octav
+        note = note + octav_apostrophe
+
+    return note
+
+
 def map_frequency_to_node(frequency):
     #calculate the note to a frequency
+
+    music_scale = ["C","Cis","D","Dis","E","F","Fis","G","Gis","A","Ais","H"]
+    midi_note = map_frequency_to_midi(frequency)
+    note = map_midi_to_note(midi_note)
+    return note
+
+
+
+    '''
     if (frequency >= 906):
         return "High"
     elif (frequency >= 855):
@@ -163,7 +199,7 @@ def map_frequency_to_node(frequency):
         return "A"
     else:
         return "Low"
-        
+    '''
         
 
 
