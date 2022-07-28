@@ -35,14 +35,14 @@ class MidiEventCreatorWorker(threading.Thread):
         self.shared = shared
         self.lastNodePlayed = 20;
         self.midiPort = mido.open_output("Microsoft GS Wavetable Synth 0")
-        self.min_duration = 0.25
+        self.min_duration = 0.01#0.25
         print(mido.get_output_names())
 
     def run(self):
         print(threading.current_thread(), 'MidiEventCreatorWorker' , 'start')
         while True:
 
-            if (self.lastNodePlayed != self.shared.midi_node_id and self.shared.duration >= 0.2):
+            if (self.lastNodePlayed != self.shared.midi_node_id and self.shared.duration >= self.min_duration):
                 self.playNoteAsMidi(self.shared.midi_node_id)
 
                 self.lastNodePlayed = self.shared.midi_node_id

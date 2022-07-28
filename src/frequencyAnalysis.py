@@ -13,7 +13,7 @@ def findMaxFromTo(array, startIdx, endIdx):
 
 
 # calculalates the median distance between peaks
-def find_peak_distances(soundBuffer):
+def find_peak_distances_and_peak_values(soundBuffer):
     if (soundBuffer.__len__() <= 0 ):
         return []
 
@@ -21,6 +21,7 @@ def find_peak_distances(soundBuffer):
 
 
     peakDistances = []  # liste um entfernungen zwischen peaks zu messen
+    peakValues=[]
 
     wasWaveformPositive = True
     isBelowLowerThreshold = False  # waveform was below 10 percent
@@ -66,6 +67,8 @@ def find_peak_distances(soundBuffer):
                 currentPeakPosition = findMaxFromTo(soundBuffer, lastMinimumPosition, currentMinimumPosition)
                 peakCount += 1
 
+                peakValues.append(currentPeakPosition)
+
                 if (lastPeakPosition >= 0):
                     peakDistanceSum += currentPeakPosition - lastPeakPosition
 
@@ -78,11 +81,11 @@ def find_peak_distances(soundBuffer):
     #print(peakDistances)
     #peakDistances.sort()
     #plt.plot(soundBuffer)
-    return peakDistances
+    return peakDistances, peakValues
 
 
 def calculate_frequency_using_peaks(audio_data,sample_rate=44100):
-    peak_distances =  find_peak_distances(audio_data)
+    peak_distances,peak_values =  find_peak_distances_and_peak_values(audio_data)
     median_distance=1
     if(peak_distances.__len__()!= 0):
         median_distance = np.median(peak_distances)
