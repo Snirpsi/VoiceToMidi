@@ -88,7 +88,7 @@ def find_peak_distances_and_peak_values(soundBuffer):
 
 
 def calculate_frequency_using_peaks(audio_data,sample_rate=44100):
-    peak_distances,peakValues =  find_peak_distances(audio_data)
+    peak_distances,peakValues =  find_peak_distances_and_peak_values(audio_data)
 
     median_distance=1
     if(peak_distances.__len__()!= 0):
