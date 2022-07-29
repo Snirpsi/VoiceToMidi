@@ -46,6 +46,7 @@ class MidiEventCreatorWorker(threading.Thread):
         self.currentlyPlaying = []
         print(mido.get_output_names())
 
+
     def run(self):
         print(threading.current_thread(), 'MidiEventCreatorWorker' , 'start')
         while True:
@@ -85,8 +86,9 @@ class MidiEventCreatorWorker(threading.Thread):
         #self.midiPort.send(msg)
         for n in self.currentlyPlaying:
             msg = mido.Message('note_off', note=n)
-            self.midiPort.send(msg)
 
+            self.midiPort.send(msg)
+        self.currentlyPlaying = []
 
         msg = mido.Message('note_on', note=int(note))
         self.currentlyPlaying.append(note)
@@ -94,8 +96,11 @@ class MidiEventCreatorWorker(threading.Thread):
 
     def stopNoteAsMidi(self):
         for n in self.currentlyPlaying:
-            msg = mido.Message('note_off', note=n)
+
+            msg = mido.Message('note_off', note = n)
             self.midiPort.send(msg)
+        self.currentlyPlaying = []
+
 
 class FrequenceAnalyzerWorker(threading.Thread):
     def __init__(self,shared, *args ,**kwargs):
