@@ -6,7 +6,7 @@ import struct
 
 class AudioStream:
     def __init__(self):
-        self.CHUNK = 1024 *4
+        self.CHUNK = 1024 *8
         self.FORMAT = pa.paInt16
         self.CHANNELS = 1
         self.RATE = 44100  # in Hz

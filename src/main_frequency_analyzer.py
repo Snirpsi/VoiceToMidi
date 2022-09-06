@@ -5,6 +5,7 @@ import json
 import PythonAudioDataProvider
 import frequencyAnalysis
 import mido
+import os
 
 class RawAudioData(object):
         def __init__(self):
@@ -163,13 +164,21 @@ if __name__ == "__main__":
                FrequencyServer(shared=audio_shared, name='b'),
                MidiEventCreatorWorker(shared=audio_shared,name='c')
                ]
-    for t in threads:
-        t.start()
+
+    try:
+        for t in threads:
+            t.start()
+
+        while True:
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("Interrupt")
+        os._exit(1)
 
 
 
-    for t in threads:
-        t.join()
+        for t in threads:
+            t.join()
 
 
 
