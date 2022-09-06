@@ -17,7 +17,7 @@ def find_peak_distances_and_peak_values(soundBuffer):
     if (soundBuffer.__len__() <= 0 ):
         return []
 
-    minimumThresholdFactor = 0.3
+    minimumThresholdFactor = 0.7
 
 
     peakDistances = []  # liste um entfernungen zwischen peaks zu messen

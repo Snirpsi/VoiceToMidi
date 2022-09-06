@@ -43,7 +43,7 @@ class MidiEventCreatorWorker(threading.Thread):
 
         #Todo: Fehlertoleranz bzw außreißererkennung
         self.min_duration = 0.21 #fehlerfrei ohne außreißer
-        self.min_amplitude = 500
+        self.min_amplitude = 1500
         self.currentlyPlaying = []
         print(mido.get_output_names())
 

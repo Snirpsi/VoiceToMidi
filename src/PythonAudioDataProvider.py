@@ -11,7 +11,7 @@ class AudioStream:
         self.CHANNELS = 1
         self.RATE = 44100  # in Hz
 
-        #declare audio stream objectt
+        #declare audio stream object
         self.p = pa.PyAudio()
         #open audio stream
         self.stream = self.p.open(
